@@ -4,10 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "very-good-ffmpeg"
-version = "1.0.0"
+version = "1.0.1"
 description = "Python SDK for the Very Good FFmpeg API"
 requires-python = ">=3.9"
 dependencies = []
 
 [project.urls]
 Homepage = "https://verygoodffmpeg.com"
+Repository = "https://github.com/verygoodffmpeg/Very-Good-FFmpeg-Python-SDK"

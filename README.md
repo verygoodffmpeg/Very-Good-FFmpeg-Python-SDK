@@ -4,7 +4,7 @@ Python SDK for the Very Good FFmpeg API — run FFmpeg jobs in the cloud.
 
 [![PyPI](https://img.shields.io/pypi/v/very-good-ffmpeg)](https://pypi.org/project/very-good-ffmpeg/)
 
-[Homepage](https://verygoodffmpeg.com) · [API Docs](https://verygoodffmpeg.com/docs)
+[Homepage](https://verygoodffmpeg.com) · [API Docs](https://verygoodffmpeg.com/docs) · [GitHub](https://github.com/verygoodffmpeg/Very-Good-FFmpeg-Python-SDK)
 
 ## Installation
 
