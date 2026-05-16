@@ -1,0 +1,24 @@
+# env
+.env.test
+.env
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+
+# editors
+.vscode/
+.idea/
+*.swp
+.claude
+
