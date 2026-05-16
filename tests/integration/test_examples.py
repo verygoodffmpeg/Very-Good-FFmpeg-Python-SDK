@@ -1,28 +1,34 @@
 import os
 import subprocess
-import sys
+import venv
 from pathlib import Path
 
-EXAMPLES_DIR = Path(__file__).parent.parent.parent / "examples"
+import pytest
+
+EXAMPLE_DIR = Path(__file__).parent.parent.parent / "examples" / "example"
 
 
-def _run(script: str) -> str:
+@pytest.fixture(scope="module")
+def venv_python(tmp_path_factory):
+    """Fresh venv with very-good-ffmpeg installed from PyPI via requirements.txt."""
+    venv_dir = tmp_path_factory.mktemp("venv")
+    venv.create(str(venv_dir), with_pip=True)
+    python = venv_dir / "bin" / "python"
+    subprocess.run(
+        [str(python), "-m", "pip", "install", "-r", str(EXAMPLE_DIR / "requirements.txt"), "--quiet"],
+        check=True,
+    )
+    return python
+
+
+def test_example_src(venv_python):
     result = subprocess.run(
-        [sys.executable, script],
-        cwd=EXAMPLES_DIR,
+        [str(venv_python), "main.py"],
+        cwd=EXAMPLE_DIR,
         env={**os.environ},
         capture_output=True,
         text=True,
     )
     assert result.returncode == 0, result.stderr
-    return result.stdout
-
-
-def test_basic_example():
-    output = _run("basic.py")
-    assert "Jobs:" in output
-
-
-def test_async_basic_example():
-    output = _run("async_basic.py")
-    assert "Jobs:" in output
+    assert "Jobs (sync):" in result.stdout
+    assert "Jobs (async):" in result.stdout

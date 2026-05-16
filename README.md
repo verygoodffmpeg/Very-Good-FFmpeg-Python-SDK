@@ -132,10 +132,13 @@ tmp = client.files.prepare()
 
 ## Examples
 
-See the [`examples/`](./examples) folder for minimal runnable scripts:
+See [`examples/example/main.py`](./examples/example/main.py) for a runnable example covering both sync and async usage.
 
-- [`examples/basic.py`](./examples/basic.py) — sync, list jobs
-- [`examples/async_basic.py`](./examples/async_basic.py) — async, list jobs
+```bash
+cd examples/example
+pip install -r requirements.txt
+VGFFMPEG_API_KEY=your_key python main.py
+```
 
 ## Support
 
