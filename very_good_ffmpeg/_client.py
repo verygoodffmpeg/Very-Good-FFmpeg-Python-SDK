@@ -155,6 +155,7 @@ class VGF:
         *,
         webhook_url: str | None = None,
         machine: str = "cpu",
+        timeout_seconds: int | None = None,
         wait: bool = False,
     ) -> Job:
         body: dict = {
@@ -165,6 +166,8 @@ class VGF:
         }
         if webhook_url is not None:
             body["webhook_url"] = webhook_url
+        if timeout_seconds is not None:
+            body["timeout_seconds"] = timeout_seconds
         qs = "?wait=true" if wait else ""
         data = self._request("POST", f"/ffmpeg{qs}", body)
         job = Job._from_dict(data["data"], client=self)
@@ -179,6 +182,7 @@ class VGF:
         *,
         webhook_url: str | None = None,
         machine: str = "cpu",
+        timeout_seconds: int | None = None,
         wait: bool = False,
     ) -> Job:
         body: dict = {
@@ -189,6 +193,8 @@ class VGF:
         }
         if webhook_url is not None:
             body["webhook_url"] = webhook_url
+        if timeout_seconds is not None:
+            body["timeout_seconds"] = timeout_seconds
         qs = "?wait=true" if wait else ""
         data = await self._arequest("POST", f"/ffmpeg{qs}", body)
         job = Job._from_dict(data["data"], client=self)

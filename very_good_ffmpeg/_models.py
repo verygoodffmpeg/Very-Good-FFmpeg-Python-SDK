@@ -28,6 +28,7 @@ class Job:
     input_files: dict[str, str]
     output_files: dict[str, str]
     webhook_url: str | None
+    timeout_seconds: int | None
     total_input_bytes: int | None
     total_output_bytes: int | None
 
@@ -48,6 +49,7 @@ class Job:
             input_files=data.get("input_files", {}),
             output_files=data.get("output_files", {}),
             webhook_url=data.get("webhook_url"),
+            timeout_seconds=data.get("timeout_seconds"),
             total_input_bytes=data.get("total_input_bytes"),
             total_output_bytes=data.get("total_output_bytes"),
             _client=client,
