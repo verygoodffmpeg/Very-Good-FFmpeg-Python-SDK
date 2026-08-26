@@ -1,0 +1,25 @@
+name: publish
+
+# Manual release: Actions -> publish -> Run workflow.
+# Version is read from very_good_ffmpeg/_version.py; PyPI rejects duplicates.
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Show version being published
+        run: uvx hatch version
+
+      - name: Build
+        run: uvx hatch build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

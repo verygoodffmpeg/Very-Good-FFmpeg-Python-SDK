@@ -9,9 +9,11 @@ from pathlib import Path
 
 from ._exceptions import VGFAuthError, VGFError, VGFNotFoundError
 from ._models import Job, JobList, PagingParams, TmpFile
+from ._version import __version__
 
 _BASE_URL = "https://verygoodffmpeg.com/api"
 _DEFAULT_TIMEOUT = 30
+_USER_AGENT = f"very-good-ffmpeg-python/{__version__}"
 
 log = logging.getLogger("very_good_ffmpeg")
 
@@ -110,6 +112,7 @@ def _put(url: str, body: bytes, content_type: str = "application/octet-stream") 
     req = urllib.request.Request(url, data=body, method="PUT")
     req.add_header("Content-Type", content_type)
     req.add_header("Content-Length", str(len(body)))
+    req.add_header("User-Agent", _USER_AGENT)
     try:
         with urllib.request.urlopen(req, timeout=_DEFAULT_TIMEOUT) as resp:
             log.debug("PUT response: %s", resp.status)
@@ -134,6 +137,7 @@ class VGF:
         req.add_header("Authorization", f"Bearer {self._api_key}")
         req.add_header("Content-Type", "application/json")
         req.add_header("Accept", "application/json")
+        req.add_header("User-Agent", _USER_AGENT)
         try:
             with urllib.request.urlopen(req, timeout=_DEFAULT_TIMEOUT) as resp:
                 result = json.loads(resp.read())
