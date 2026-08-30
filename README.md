@@ -22,9 +22,9 @@ client = VGF(os.environ["VGFFMPEG_API_KEY"])
 
 # Create a job and wait for it to complete
 job = client.run(
-    input_files={"input": "https://example.com/input.mp4"},
+    input_files={"input.mp4": "https://example.com/input.mp4"},
     output_files=["output.mp4"],
-    ffmpeg_commands=["-i {{input}} -vf scale=1280:720 {{output.mp4}}"],
+    ffmpeg_commands=["-i inputs/input.mp4 -vf scale=1280:720 outputs/output.mp4"],
     wait=True,
 )
 
@@ -41,9 +41,9 @@ from very_good_ffmpeg import VGF
 async def main():
     client = VGF(os.environ["VGFFMPEG_API_KEY"])
     job = await client.arun(
-        input_files={"input": "https://example.com/input.mp4"},
+        input_files={"input.mp4": "https://example.com/input.mp4"},
         output_files=["output.mp4"],
-        ffmpeg_commands=["-i {{input}} -vf scale=1280:720 {{output.mp4}}"],
+        ffmpeg_commands=["-i inputs/input.mp4 -vf scale=1280:720 outputs/output.mp4"],
         wait=True,
     )
     print(job.status)
@@ -59,14 +59,16 @@ Submits an FFmpeg job. Pass `wait=True` to block until the job reaches a termina
 
 ```python
 job = client.run(
-    input_files={"input": "https://example.com/input.mp4"},
+    input_files={"input.mp4": "https://example.com/input.mp4"},
     output_files=["output.mp4"],
-    ffmpeg_commands=["-i {{input}} -c:v libx264 {{output.mp4}}"],
+    ffmpeg_commands=["-i inputs/input.mp4 -c:v libx264 outputs/output.mp4"],
     webhook_url="https://example.com/webhook",  # optional
     machine="nvidia",  # optional: "cpu" | "nvidia"
     wait=True,
 )
 ```
+
+See [Running Commands](https://verygoodffmpeg.com/docs/basics/running-commands) for the full request shape.
 
 ### Get a job — `client.jobs.get(id)` / `client.jobs.aget(id)`
 
@@ -109,9 +111,9 @@ with open("input.mp4", "rb") as f:
     download_url = client.files.upload(f.read(), "video/mp4")
 
 job = client.run(
-    input_files={"input": download_url},
+    input_files={"input.mp4": download_url},
     output_files=["output.mp4"],
-    ffmpeg_commands=["-i {{input}} -vf scale=1280:720 {{output.mp4}}"],
+    ffmpeg_commands=["-i inputs/input.mp4 -vf scale=1280:720 outputs/output.mp4"],
 )
 ```
 
@@ -129,6 +131,20 @@ Returns a `TmpFile` with `upload_url` and `download_url` if you need to stream a
 tmp = client.files.prepare()
 # PUT your file to tmp.upload_url, then use tmp.download_url as input
 ```
+
+## Referencing files in commands
+
+Inputs are downloaded to `inputs/` and outputs are uploaded from `outputs/`, so reference
+them as plain paths — the key in `input_files` and the entry in `output_files` are the
+filenames.
+
+```python
+input_files={"input.mp4": "https://example.com/input.mp4"},
+output_files=["output.wav"],
+ffmpeg_commands=["-i inputs/input.mp4 -vn outputs/output.wav"],
+```
+
+See [File Reference Styles](https://verygoodffmpeg.com/docs/advanced/file-reference-styles) for more.
 
 ## Examples
 
